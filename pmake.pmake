@@ -17,23 +17,26 @@
 
 # The compiler used to compile the project. Common compilers used in both Windows and
 # MacOS are gcc or clang.
-# comp=gcc
-comp=clang
+# comp=clang
+comp=gcc
 
 # If the project needs to be compile with specific compiler flags (optional).
 # For now, I just use it to declare the include path, where the compiler can find
 # the header files if there is any.
 # UNIX: -I./inlude, Windows: -I./include
-cflags=-I./include
+flags=-Wall -Wextra -I./include
 
 # Targed binary of the project, either an executive or an object/library file.
 # target=obj
 target=exec
 
-# Project name, if there is no src file defined, pmake assumes that the .c
-# file has the same name as the project name.
+# Binary path of the project. If no bin path is declared, pmake assumes it is ./bin.
+bin=./bin
+
+# Project name, if there is no src file defined, pmake assumes that main.c
+# is the file with the main function in it.
 # UNIX: ./bin/pmake, Windows: .\bin\pmake
-project=./bin/pmake
+project=pmake
 
 # Source file: Use it if the source filename is different than the project name.
 # As example main.c but project is cal.exe.
@@ -42,4 +45,4 @@ src=./src/pmake.c
 
 # Libraries to add, or already compiled .o files. Make sure they are properly included.
 # UNIX: ./src/lib1.c ./src/lib2.c ./src/lib3.c, Windows: .\src\lib1.c .\src\lib2.c .\src\lib3.c
-libs=
+libs=./src/manpage.c ./src/parse.c ./src/version.c

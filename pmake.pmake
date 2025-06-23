@@ -11,15 +11,20 @@
 # Change Log:
 # Sat 2024-11-16 File created.                                          Version: 00.01
 # Sun 2024-11-17 Changed the configuration to fit the project.          Version: 00.02
+# Sun 2025-06-22 Changed the make file into {project.pmake}.            Version: 00.03
+# Sun 2025-06-22 Included both Unix and Windows paths.                  Version: 00.04
 # ------------------------------------------------------------------------------------
 
 # The compiler used to compile the project. Common compilers used in both Windows and
 # MacOS are gcc or clang.
-# comp=clang
-comp=gcc
+# comp=gcc
+comp=clang
 
 # If the project needs to be compile with specific compiler flags (optional).
-cflags=
+# For now, I just use it to declare the include path, where the compiler can find
+# the header files if there is any.
+# UNIX: -I./inlude, Windows: -I./include
+cflags=-I./include
 
 # Targed binary of the project, either an executive or an object/library file.
 # target=obj
@@ -27,11 +32,14 @@ target=exec
 
 # Project name, if there is no src file defined, pmake assumes that the .c
 # file has the same name as the project name.
-project=pmake
+# UNIX: ./bin/pmake, Windows: .\bin\pmake
+project=./bin/pmake
 
 # Source file: Use it if the source filename is different than the project name.
 # As example main.c but project is cal.exe.
-src=pmake.c
+# UNIX: ./src/pmake.c, Windows: .\src\pmake.c
+src=./src/pmake.c
 
 # Libraries to add, or already compiled .o files. Make sure they are properly included.
+# UNIX: ./src/lib1.c ./src/lib2.c ./src/lib3.c, Windows: .\src\lib1.c .\src\lib2.c .\src\lib3.c
 libs=

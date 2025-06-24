@@ -1,48 +1,67 @@
-# ------------------------------------------------------------------------------------
-# makefile for the tool pmake. pmake is a tool that reads instructions you give it
-# about how to use a compiler of your choice and then automatically runs the compiler
-# to build your software projects. Imagine it as a smart assistant that knows exactly
-# how to compile and prepare all the pieces of your software, ensuring everything fits
-# together correctly without you having to manually run each step. This automation makes
-# the development process faster and reduces the chance of errors.
-# ------------------------------------------------------------------------------------
-# Author: Patrik Eigenmann (p.eigenmann@gmx.net)
-# ------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------------
+# pmake.pmake - This file is the makefile for the tool pmake for the project "pmake". pmake is a
+# tool that reads instructions you give it about how to use a compiler of your choice and then
+# automatically runs the compiler to build your software projects. Imagine it as a smart assistant
+# that knows exactly how to compile and prepare all the pieces of your software, ensuring everything
+# fits together correctly without you having to manually run each step. This automation makes the
+# development process faster and reduces the chance of errors.
+# ------------------------------------------------------------------------------------------------
+# Author: Patrik Eigenmann 
+# eMail:  p.eigenmann@gmx.net
+# GitHub: www.github.com/PatrikEigenmann/pmake
+# ------------------------------------------------------------------------------------------------
 # Change Log:
-# Sat 2024-11-16 File created.                                          Version: 00.01
-# Sun 2024-11-17 Changed the configuration to fit the project.          Version: 00.02
-# Sun 2025-06-22 Changed the make file into {project.pmake}.            Version: 00.03
-# Sun 2025-06-22 Included both Unix and Windows paths.                  Version: 00.04
-# ------------------------------------------------------------------------------------
+# Sat 2024-11-16 File created.                                                      Version: 00.01
+# Sun 2024-11-17 Changed the configuration to fit the project.                      Version: 00.02
+# Sun 2025-06-22 Changed the make file into {project.pmake}.                        Version: 00.03
+# Sun 2025-06-22 Included both Unix and Windows paths.                              Version: 00.04
+# ------------------------------------------------------------------------------------------------
 
-# The compiler used to compile the project. Common compilers used in both Windows and
-# MacOS are gcc or clang.
-# comp=clang
-comp=gcc
+# The compiler used for compiling the project is essential. Commonly, GCC is employed for Windows
+# due to its robustness and prevalence in open-source development. On MacOS, Clang is preferred
+# for its speed and advanced diagnostics. These compilers translate source code into executable
+# binaries, ensuring compatibility and optimized performance across different operating systems.
+# comp=gcc
+comp=clang
 
-# If the project needs to be compile with specific compiler flags (optional).
-# For now, I just use it to declare the include path, where the compiler can find
-# the header files if there is any.
+# If the project requires specific compiler flags for compilation, these flags should be specified
+# to ensure the code is compiled correctly and efficiently. Compiler flags can enable or disable
+# features, optimize performance, or enforce coding standards. Properly setting and documenting
+# these flags can lead to more robust and optimized software, improving performance and catching
+# potential errors during compilation. While optional, using the right flags is crucial for
+# consistency and reproducibility in the build process.
 # UNIX: -I./inlude, Windows: -I./include
 flags=-Wall -Wextra -I./include
 
-# Targed binary of the project, either an executive or an object/library file.
+# If the project necessitates specific compiler flags for compilation, these should be meticulously
+# specified to ensure precise and efficient code compilation. Compiler flags play a crucial role in
+# enabling or disabling features, optimizing performance, and enforcing strict coding standards.
+# Properly documenting and utilizing these flags can enhance the robustness and optimization of the
+# software, ensuring consistency and reducing potential errors in the build process. Although optional,
+# their strategic use is pivotal for achieving high-quality, reliable software development.
 # target=obj
 target=exec
 
-# Binary path of the project. If no bin path is declared, pmake assumes it is ./bin.
+# Set the path where compiled binaries should be placed. This includes executables, libraries, or any
+# output produced by the build process. It allows clean separation of source files from build artifacts.
+# Useful for organizing outputs in a predictable and reusable location.
 bin=./bin
 
-# Project name, if there is no src file defined, pmake assumes that main.c
-# is the file with the main function in it.
-# UNIX: ./bin/pmake, Windows: .\bin\pmake
+# Specify the project name, as pmake will use this name to create the executable. If the src directive
+# is not specified, pmake assumes the corresponding .c file has the same name as the project directive.
+# This automatic association streamlines the build process by aligning the project name with its main 
+# source file when no specific source files are defined.
 project=pmake
 
-# Source file: Use it if the source filename is different than the project name.
-# As example main.c but project is cal.exe.
-# UNIX: ./src/pmake.c, Windows: .\src\pmake.c
-src=./src/pmake.c
+# The `src` directive defines the source files to be compiled. If left empty, `pmake` defaults to
+# using `main.c`, following the common convention in C and C++ projects. In projects with a standardized
+# folder structure, wildcard patterns can be used to simplify the directive — for example, src=./src/*.c
+# will automatically include all C source files in the `src` directory.
+src=./src/*.c
 
-# Libraries to add, or already compiled .o files. Make sure they are properly included.
-# UNIX: ./src/lib1.c ./src/lib2.c ./src/lib3.c, Windows: .\src\lib1.c .\src\lib2.c .\src\lib3.c
-libs=./src/manpage.c ./src/parse.c ./src/version.c
+# Specify the libraries required for linking, which can include C source files (.c), object files (.o),
+# or dynamically linked libraries (e.g., -lncurses, -lmarkdown). Ensure these are properly referenced
+# to guarantee successful compilation and linking of the project.
+# libs=-lncurses -lmarkdown -lsamael
+# libs=./src/manpage.c ./src/parse.c ./src/version.c
+libs=

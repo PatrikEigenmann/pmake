@@ -43,7 +43,9 @@
  * Sun 2025-04-06 BugFix in the library string. Switched to append_format.              Version: 00.17
  * Sun 2025-04-06 Making sure that the bug fix doesn't influence the make_process.      Version: 00.18
  * Sun 2025-06-22 Loading now the file {project}.pmake instead of {project}.makefile.   Version: 00.19
- * Sun 2025-06-22 Complete overhaul of this tool, because of an unfixable bug.          Version: 00.20 
+ * Sun 2025-06-22 Complete overhaul of this tool, because of an unfixable bug.          Version: 00.20
+ * Tue 2025-06-24 Renewed the manpage style help text because of its new functionality. Version: 00.21
+ * Tue 2025-06-25 Updated the manpage style help text.                                  Version: 00.22 
  * -----------------------------------------------------------------------------------------------------
  * To Do's:
  * - Take cVersion.h & cVersion.c appart and integrate it directly into this code base.             Done.                             Done.
@@ -77,7 +79,7 @@
 // ----------------------------------------------------------------------------------------------------
 int main(int argc, char **argv) {
 
-    Version v = create_version(0, 20);
+    Version v = create_version(0, 22);
     
     if (argc < 2 || isHelpTriggered(argc, argv[1])) {
         print_help(v);

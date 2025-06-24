@@ -6,77 +6,83 @@
 // consistency across various development environments. This tool is an essential asset for any development
 // team, enabling faster turnaround times and improved project management.
 // 
-// Compile information:
-// To avoid unnecessary dependencies to libraries all functions and methods are integraded into this
-// codefile. There for a simple call of the compiler to create an executable without any dependencies
-// is probably the easiest way to create your own pmake tool. If you already have a working pmake, you
-// can use it to compile this code.
-// gcc -Wall -Wextra -g -Iinclude src/*.c -o bin/pmake
-// clang -Wall -Wextra -g -Iinclude src/*.c -o bin/pmake 
-/* ----------------------------------------------------------------------------------------------------
- * Author:  Patrik Eigenmann
- * eMail:   p.eigenmann@gmx.net
- * GitHub:  www.github.com/PatrikEigenmann/cpp
- * ----------------------------------------------------------------------------------------------------
- * Fri 2024-11-15 File created.                                                         Version: 00.01
- * Sat 2024-11-16 Rearranged the whole program and renamed it. Fixed some bug too.      Version: 00.02
- * Sat 2024-11-16 Bug Fix in putting the compiler command togheter.                     Version: 00.03
- * Sat 2024-11-16 Rearranged the function process_makefile to a more concice top down   Version: 00.04
- *                way.
- * Sat 2024-11-16 BugFix - in function process_makefile compiling with the -c flad      Version: 00.05
- *                didn't work.
- * Sat 2024-11-16 Another BugFix - in the function process_makefile, adding .o ending   Version: 00.06
- *                when compiling with the -c flag.
- * Tue 2024-11-19 For ease of compiling this project, I have included the               Version: 00.07
- *                functionallity from cVersion & cManPage directly into the code file
- *                pmake.c.
- * Thu 2024-11-21 Updated the method doesFileExist(), first check if file exists,       Version: 00.08
- *                second check if it is the same version.
- * Wed 2025-01-22 Header comment GitHub URL updated.                                    Version: 00.09
- * Sun 2025-03-23 Target handles now obj, exec or shared.                               Version: 00.10
- * Sun 2025-03-23 Fixed a bug while handling "shared".                                  Version: 00.11
- * Tue 2025-03-25 Changed the way the compiler command is put together.                 Version: 00.12
- * Tue 2025-03-25 Shared Library under Windows is now a .dll and under Unix a .so.      Version: 00.13
- * Sun 2025-04-06 Increased the library string to 10000 characters.                     Version: 00.14
- * Sun 2025-04-06 New approach with a large library string. Using a isLibs flag.        Version: 00.15
- * Sun 2025-04-06 BugFix in with the library string. strcpy wasn't working.             Version: 00.16
- * Sun 2025-04-06 BugFix in the library string. Switched to append_format.              Version: 00.17
- * Sun 2025-04-06 Making sure that the bug fix doesn't influence the make_process.      Version: 00.18
- * Sun 2025-06-22 Loading now the file {project}.pmake instead of {project}.makefile.   Version: 00.19
- * Sun 2025-06-22 Complete overhaul of this tool, because of an unfixable bug.          Version: 00.20
- * Tue 2025-06-24 Renewed the manpage style help text because of its new functionality. Version: 00.21
- * Tue 2025-06-25 Updated the manpage style help text.                                  Version: 00.22 
- * -----------------------------------------------------------------------------------------------------
- * To Do's:
- * - Take cVersion.h & cVersion.c appart and integrate it directly into this code base.             Done.                             Done.
- * - Take cManPage.h & cManPage.c appart and integrate it directly into this code base.             Done.                             Done.
- * - Updated the method doesFileExists, checking first if the file really exist, then if it is      Done.
- *   the same version.
- * - Make sure if the library string isn't in the end, the program doesn't crash.                   Done.
- * *****************************************************************************************************/
+// To buil `pmake` you can use any of the following methods:
+// =========================================================
+// Direct compiler invocation:
+//     gcc     -Wall -Wextra -std=c99 -Iinclude src/*.c -o bin/pmake
+//     clang   -Wall -Wextra -std=c99 -Iinclude src/*.c -o bin/pmake
+//
+// Using an older version of pmake:
+//     pmake pmake.pmake
+//
+// Using GNU Make (Makefile already integrated):
+//     make
+//
+// Using CMake (CMakeLists.txt already integrated):
+//     mkdir build && cd build
+//     cmake ..
+//
+// To install `pmake` into a system-wide `bin/` directory:
+//     On Unix-like systems:
+//         chmod +x ./scripts/install.sh
+//         ./scripts/install.sh
+//     On Windows:
+//         .\scripts\install.cmd
+// ----------------------------------------------------------------------------------------------------
+// Author:  Patrik Eigenmann
+// eMail:   p.eigenmann@gmx.net
+// GitHub:  www.github.com/PatrikEigenmann/pmake
+// ----------------------------------------------------------------------------------------------------
+// Fri 2024-11-15 File created.                                                             Version: 00.01
+// Sat 2024-11-16 Rearranged the whole program and renamed it. Fixed some bug too.          Version: 00.02
+// Sat 2024-11-16 Bug Fix in putting the compiler command togheter.                         Version: 00.03
+// Sat 2024-11-16 Rearranged process_makefile() for a clearer, top-down structure.          Version: 00.04
+// Sat 2024-11-16 Fixed -c flag handling in process_makefile().                             Version: 00.05
+// Sat 2024-11-16 Fixed .o suffix handling with -c flag in process_makefile().              Version: 00.06
+// Tue 2024-11-19 Merged cVersion/cManPage into pmake.c for simplicity.                     Version: 00.07
+// Thu 2024-11-21 Updated doesFileExist() to validate file and version.                     Version: 00.08
+// Wed 2025-01-22 Updated header comment with GitHub URL updated.                           Version: 00.09
+// Sun 2025-03-23 Target handles now obj, exec or shared.                                   Version: 00.10
+// Sun 2025-03-23 Fixed a bug while handling "shared".                                      Version: 00.11
+// Tue 2025-03-25 Changed the way the compiler command is put together.                     Version: 00.12
+// Tue 2025-03-25 Shared Library under Windows is now a .dll and under Unix a .so.          Version: 00.13
+// Sun 2025-04-06 Increased the library string to 10000 characters.                         Version: 00.14
+// Sun 2025-04-06 New approach with a large library string. Using a isLibs flag.            Version: 00.15
+// Sun 2025-04-06 BugFix in with the library string. strcpy wasn't working.                 Version: 00.16
+// Sun 2025-04-06 BugFix in the library string. Switched to append_format.                  Version: 00.17
+// Sun 2025-04-06 Making sure that the bug fix doesn't influence the make_process.          Version: 00.18
+// Sun 2025-06-22 Loading now the file {project}.pmake instead of {project}.makefile.       Version: 00.19
+// Sun 2025-06-22 Complete overhaul of this tool, because of an unfixable bug.              Version: 00.20
+// Tue 2025-06-24 Renewed the manpage style help text because of its new functionality.     Version: 00.21
+// Tue 2025-06-25 Updated the manpage style help text.                                      Version: 00.22 
+// -----------------------------------------------------------------------------------------------------
+// To Do's:
+// - Take cVersion.h & cVersion.c appart and integrate it directly into this code base.             Done.                             Done.
+// - Take cManPage.h & cManPage.c appart and integrate it directly into this code base.             Done.                             Done.
+// - Check file exists before version in doesFileExists().                                          Done.
+// - Make sure if the library string isn't in the end, the program doesn't crash.                   Done.
+// - Implement linker flags directive in the pmake file.
+// *****************************************************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "parse.h"
 #include "debug.h"
 #include "version.h"
 #include "manpage.h"
 
-// ---------------------------------------------------------------------------------------------------
-// Our main function serves as the command center of your network diagnostics tool, orchestrating the
-// seamless execution of all key operations. It handles user input, dynamically configures the scanning
-// range, initiates progress tracking, and processes the results with utmost efficiency. Designed for
-// top-down clarity, this function ensures that every step, from initialization to output, is executed
-// with precision.
-//
-// By leveraging the main function, developers can effortlessly manage complex network diagnostics tasks,
-// ensuring a streamlined and intuitive user experience. It integrates all components harmoniously,
-// reflecting the highest standards of coding excellence.
+// -----------------------------------------------------------------------------------------------------
+// main - The main function is the starting point of a C or C++ program, where the execution of the program
+// begins. This version of the main function allows the program to take command-line arguments when it runs.
+// The function typically returns an numbered value to the operating system, often zero to signify successful
+// execution.
 //
 // @param argc  The number of command-line arguments.
 // @param argv  The array of command-line arguments.
-// @return      0 on successful completion, 1 on error.
-// ----------------------------------------------------------------------------------------------------
+// @return      EXIT_SUCCESS on successful completion, EXIT_FAILURE on error.
+// -----------------------------------------------------------------------------------------------------
 int main(int argc, char **argv) {
 
     Version v = create_version(0, 22);

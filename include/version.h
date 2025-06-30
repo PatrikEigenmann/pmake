@@ -1,5 +1,14 @@
 /* ****************************************************************************************************
- * Description
+ * version.h — Simple and portable versioning interface for software components. Provides a compact
+ * Version struct and functions to manage version metadata in a consistent, language-agnostic format.
+ * Suitable for embedding directly into C projects or exporting via shared libraries for broader
+ * interoperability across dynamic environments.
+ *
+ * Designed to track major and minor build identifiers, format them into human-readable strings,
+ * and serve as a foundation for both runtime reporting and compatibility checks.
+ *
+ * Applicable in embedded tools, CLI applications, shared libraries, or any modular system
+ * that benefits from transparent version signaling.
  * ----------------------------------------------------------------------------------------------------
  * Author:      Patrik Eigenmann
  * eMail:       p.eigenmann@gmx.net

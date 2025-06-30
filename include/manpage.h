@@ -1,5 +1,10 @@
 /* ****************************************************************************************************
- * Description
+ * manpage.h - This header provides basic facilities for generating and displaying manual/help text
+ * within a command-line application. It includes data structures for storing help content and functions
+ * to print documentation or detect common help flags.
+ *
+ * Designed for portability and minimal dependencies — suitable for lightweight tools or
+ * utilities that need self-contained usage guidance.
  * ----------------------------------------------------------------------------------------------------
  * Author:      Patrik Eigenmann
  * eMail:       p.eigenmann@gmx.net

@@ -1,5 +1,8 @@
 /* ****************************************************************************************************
- * Description
+ * manpage.c - Implementation file for version-aware help and manual page handling. Provides routines
+ * to format and write help text, manage versioned documentation, and handle user-facing guidance in a
+ * cross-platform way. Designed to operate with minimal dependencies while supporting consistency
+ * across command-line tools. Compatible with both Unix-like and Windows environments.
  * ----------------------------------------------------------------------------------------------------
  * Author:      Patrik Eigenmann
  * eMail:       p.eigenmann@gmx.net
